@@ -66,12 +66,16 @@ app.post('/api/DataPlane', (req: express.Request, res: express.Response) => {
                 uri: `https://${req.body.hostName}/${encodeURIComponent(req.body.path)}${queryString}`,
             },
             (err, httpRes, body) => {
+                // tslint:disable-next-line:no-console
+                console.log('1');
                 if (httpRes) {
                     if (httpRes.headers && httpRes.headers[DEVICE_STATUS_HEADER]) { // handles happy failure cases when error code is returned as a header
                         // tslint:disable-next-line:radix
                         res.status(parseInt(httpRes.headers[DEVICE_STATUS_HEADER] as string)).send({body: JSON.parse(body)});
                     }
                     else {
+                        // tslint:disable-next-line:no-console
+                        console.log('2');
                         res.status(httpRes.statusCode).send({
                             body: JSON.parse(body),
                             headers: httpRes.headers
@@ -79,12 +83,16 @@ app.post('/api/DataPlane', (req: express.Request, res: express.Response) => {
                     }
                 }
                 else {
+                    // tslint:disable-next-line:no-console
+                    console.log('3');
                     res.send({body: JSON.parse(body)});
                 }
             });
         }
     }
     catch (error) {
+        // tslint:disable-next-line:no-console
+        console.log('4');
         res.status(SERVER_ERROR).send(error);
     }
 });

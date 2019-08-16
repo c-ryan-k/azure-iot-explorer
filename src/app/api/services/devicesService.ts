@@ -107,11 +107,11 @@ const dataPlaneResponseHelper = async (response: Response) => {
     if (!result) {
         throw new Error();
     }
-    if (result.ExceptionMessage && result.Message) {
-        throw new Error(`${result.Message}: ${result.ExceptionMessage}`);
+    if (result.body.ExceptionMessage && result.body.Message) {
+        throw new Error(`${result.body.Message}: ${result.body.ExceptionMessage}`);
     }
-    else if (!!result.ExceptionMessage || result.Message) {
-        throw new Error(!!result.ExceptionMessage ? result.ExceptionMessage : result.Message);
+    else if (!!result.body.ExceptionMessage || result.body.Message) {
+        throw new Error(!!result.body.ExceptionMessage ? result.body.ExceptionMessage : result.body.Message);
     }
 
     throw new Error(result);
