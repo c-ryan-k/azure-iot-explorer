@@ -6,6 +6,7 @@ import { Twin } from '../models/device';
 import { DeviceIdentity } from '../models/deviceIdentity';
 import DeviceQuery from '../models/deviceQuery';
 import { DigitalTwinInterfaces } from '../models/digitalTwinModels';
+import { ModuleIdentity } from '../models/moduleIdentity';
 
 export interface DataPlaneParameters {
     connectionString: string;
@@ -30,7 +31,7 @@ export interface InvokeMethodParameters extends DataPlaneParameters {
 export interface CloudToDeviceMessageParameters extends DataPlaneParameters {
     deviceId: string;
     body: string;
-    properties?: Array<{key: string, value: string}>;
+    properties?: Array<{key: string, value: string, isSystemProperty: boolean}>;
 }
 
 export interface FetchDeviceParameters extends DataPlaneParameters {
@@ -81,4 +82,8 @@ export interface PatchDigitalTwinInterfacePropertiesParameters extends DataPlane
 
 export interface FetchModuleIdentitiesParameters extends DataPlaneParameters {
     deviceId: string;
+}
+
+export interface AddModuleIdentityParameters extends DataPlaneParameters {
+    moduleIdentity: ModuleIdentity;
 }

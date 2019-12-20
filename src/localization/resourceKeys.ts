@@ -15,13 +15,49 @@ export class ResourceKeys {
       properties : {
          addCustomProperty : "cloudToDeviceMessage.properties.addCustomProperty",
          addSystemProperty : "cloudToDeviceMessage.properties.addSystemProperty",
-         customProperties : "cloudToDeviceMessage.properties.customProperties",
          delete : "cloudToDeviceMessage.properties.delete",
          key : "cloudToDeviceMessage.properties.key",
          keyDup : "cloudToDeviceMessage.properties.keyDup",
+         label : "cloudToDeviceMessage.properties.label",
          rowCheckBoxAriaLabel : "cloudToDeviceMessage.properties.rowCheckBoxAriaLabel",
          selectAllCheckboxAriaLabel : "cloudToDeviceMessage.properties.selectAllCheckboxAriaLabel",
-         systemProperties : "cloudToDeviceMessage.properties.systemProperties",
+         systemProperties : {
+            ack : {
+               description : "cloudToDeviceMessage.properties.systemProperties.ack.description",
+               displayName : "cloudToDeviceMessage.properties.systemProperties.ack.displayName",
+               full : "cloudToDeviceMessage.properties.systemProperties.ack.full",
+               negative : "cloudToDeviceMessage.properties.systemProperties.ack.negative",
+               positive : "cloudToDeviceMessage.properties.systemProperties.ack.positive",
+            },
+            contentEncoding : {
+               description : "cloudToDeviceMessage.properties.systemProperties.contentEncoding.description",
+               displayName : "cloudToDeviceMessage.properties.systemProperties.contentEncoding.displayName",
+               utf16 : "cloudToDeviceMessage.properties.systemProperties.contentEncoding.utf16",
+               utf32 : "cloudToDeviceMessage.properties.systemProperties.contentEncoding.utf32",
+               utf8 : "cloudToDeviceMessage.properties.systemProperties.contentEncoding.utf8",
+            },
+            contentType : {
+               description : "cloudToDeviceMessage.properties.systemProperties.contentType.description",
+               displayName : "cloudToDeviceMessage.properties.systemProperties.contentType.displayName",
+            },
+            correlationId : {
+               description : "cloudToDeviceMessage.properties.systemProperties.correlationId.description",
+               displayName : "cloudToDeviceMessage.properties.systemProperties.correlationId.displayName",
+            },
+            expiryTimeUtc : {
+               description : "cloudToDeviceMessage.properties.systemProperties.expiryTimeUtc.description",
+               displayName : "cloudToDeviceMessage.properties.systemProperties.expiryTimeUtc.displayName",
+               error : "cloudToDeviceMessage.properties.systemProperties.expiryTimeUtc.error",
+            },
+            lockToken : {
+               description : "cloudToDeviceMessage.properties.systemProperties.lockToken.description",
+               displayName : "cloudToDeviceMessage.properties.systemProperties.lockToken.displayName",
+            },
+            messageId : {
+               description : "cloudToDeviceMessage.properties.systemProperties.messageId.description",
+               displayName : "cloudToDeviceMessage.properties.systemProperties.messageId.displayName",
+            },
+         },
          toggleSelectionColumnAriaLabel : "cloudToDeviceMessage.properties.toggleSelectionColumnAriaLabel",
          tooltip : "cloudToDeviceMessage.properties.tooltip",
          value : "cloudToDeviceMessage.properties.value",
@@ -100,6 +136,7 @@ export class ResourceKeys {
    public static deviceContent = {
       navBar : {
          add : "deviceContent.navBar.add",
+         addModuleIdentity : "deviceContent.navBar.addModuleIdentity",
          cloudToDeviceMessage : "deviceContent.navBar.cloudToDeviceMessage",
          collapse : "deviceContent.navBar.collapse",
          commands : "deviceContent.navBar.commands",
@@ -321,8 +358,8 @@ export class ResourceKeys {
                operationType : {
                   ariaLabel : "deviceLists.query.searchPills.clause.operationType.ariaLabel",
                   options : {
-                     equal : "deviceLists.query.searchPills.clause.operationType.options.equal",
-                     notEqual : "deviceLists.query.searchPills.clause.operationType.options.notEqual",
+                     equals : "deviceLists.query.searchPills.clause.operationType.options.equals",
+                     notEquals : "deviceLists.query.searchPills.clause.operationType.options.notEquals",
                   },
                   title : "deviceLists.query.searchPills.clause.operationType.title",
                },
@@ -330,6 +367,7 @@ export class ResourceKeys {
                   ariaLabel : "deviceLists.query.searchPills.clause.parameterType.ariaLabel",
                   items : {
                      capabilityModelId : "deviceLists.query.searchPills.clause.parameterType.items.capabilityModelId",
+                     edge : "deviceLists.query.searchPills.clause.parameterType.items.edge",
                      interfaceId : "deviceLists.query.searchPills.clause.parameterType.items.interfaceId",
                      lastActivityTime : "deviceLists.query.searchPills.clause.parameterType.items.lastActivityTime",
                      propertyValue : "deviceLists.query.searchPills.clause.parameterType.items.propertyValue",
@@ -344,6 +382,14 @@ export class ResourceKeys {
                },
                value : {
                   ariaLabel : "deviceLists.query.searchPills.clause.value.ariaLabel",
+                  deviceCapability : {
+                     edge : "deviceLists.query.searchPills.clause.value.deviceCapability.edge",
+                     nonEdge : "deviceLists.query.searchPills.clause.value.deviceCapability.nonEdge",
+                  },
+                  deviceStatus : {
+                     disabled : "deviceLists.query.searchPills.clause.value.deviceStatus.disabled",
+                     enabled : "deviceLists.query.searchPills.clause.value.deviceStatus.enabled",
+                  },
                   placeholder : "deviceLists.query.searchPills.clause.value.placeholder",
                   title : "deviceLists.query.searchPills.clause.value.title",
                },
@@ -458,6 +504,34 @@ export class ResourceKeys {
       },
    };
    public static moduleIdentity = {
+      addModuleHeaderText : "moduleIdentity.addModuleHeaderText",
+      authenticationType : {
+         ca : {
+            text : "moduleIdentity.authenticationType.ca.text",
+            type : "moduleIdentity.authenticationType.ca.type",
+         },
+         selfSigned : {
+            primaryThumbprint : "moduleIdentity.authenticationType.selfSigned.primaryThumbprint",
+            primaryThumbprintTooltip : "moduleIdentity.authenticationType.selfSigned.primaryThumbprintTooltip",
+            secondaryThumbprint : "moduleIdentity.authenticationType.selfSigned.secondaryThumbprint",
+            secondaryThumbprintTooltip : "moduleIdentity.authenticationType.selfSigned.secondaryThumbprintTooltip",
+            text : "moduleIdentity.authenticationType.selfSigned.text",
+            type : "moduleIdentity.authenticationType.selfSigned.type",
+         },
+         symmetricKey : {
+            autoGenerate : "moduleIdentity.authenticationType.symmetricKey.autoGenerate",
+            generatePrimaryKey : "moduleIdentity.authenticationType.symmetricKey.generatePrimaryKey",
+            generateSecondaryKey : "moduleIdentity.authenticationType.symmetricKey.generateSecondaryKey",
+            primaryConnectionString : "moduleIdentity.authenticationType.symmetricKey.primaryConnectionString",
+            primaryConnectionStringTooltip : "moduleIdentity.authenticationType.symmetricKey.primaryConnectionStringTooltip",
+            primaryKey : "moduleIdentity.authenticationType.symmetricKey.primaryKey",
+            secondaryConnectionString : "moduleIdentity.authenticationType.symmetricKey.secondaryConnectionString",
+            secondaryConnectionStringTooltip : "moduleIdentity.authenticationType.symmetricKey.secondaryConnectionStringTooltip",
+            secondaryKey : "moduleIdentity.authenticationType.symmetricKey.secondaryKey",
+            type : "moduleIdentity.authenticationType.symmetricKey.type",
+         },
+         text : "moduleIdentity.authenticationType.text",
+      },
       columns : {
          connectionState : "moduleIdentity.columns.connectionState",
          connectionStateLastUpdated : "moduleIdentity.columns.connectionStateLastUpdated",
@@ -465,11 +539,21 @@ export class ResourceKeys {
          moduleId : "moduleIdentity.columns.moduleId",
       },
       command : {
+         add : "moduleIdentity.command.add",
+         cancel : "moduleIdentity.command.cancel",
          refresh : "moduleIdentity.command.refresh",
+         save : "moduleIdentity.command.save",
       },
       errorFetching : "moduleIdentity.errorFetching",
       headerText : "moduleIdentity.headerText",
+      moduleId : "moduleIdentity.moduleId",
+      moduleIdTooltip : "moduleIdentity.moduleIdTooltip",
       noModules : "moduleIdentity.noModules",
+      validation : {
+         invalidKey : "moduleIdentity.validation.invalidKey",
+         invalidModuleIdentityName : "moduleIdentity.validation.invalidModuleIdentityName",
+         invalidThumbprint : "moduleIdentity.validation.invalidThumbprint",
+      },
    };
    public static noMatchError = {
       description : "noMatchError.description",
@@ -479,6 +563,8 @@ export class ResourceKeys {
    public static notifications = {
       addDeviceOnError : "notifications.addDeviceOnError",
       addDeviceOnSucceed : "notifications.addDeviceOnSucceed",
+      addModuleIdentityOnError : "notifications.addModuleIdentityOnError",
+      addModuleIdentityOnSucceed : "notifications.addModuleIdentityOnSucceed",
       cloudToDeviceMessageOnError : "notifications.cloudToDeviceMessageOnError",
       cloudToDeviceMessageOnSuccess : "notifications.cloudToDeviceMessageOnSuccess",
       copiedToClipboard : "notifications.copiedToClipboard",
@@ -487,6 +573,7 @@ export class ResourceKeys {
       getDeviceIdentityOnError : "notifications.getDeviceIdentityOnError",
       getDeviceListGenericErrorHelp : "notifications.getDeviceListGenericErrorHelp",
       getDeviceListOnError : "notifications.getDeviceListOnError",
+      getDeviceListQueryGenericErrorHelp : "notifications.getDeviceListQueryGenericErrorHelp",
       getDeviceTwinOnError : "notifications.getDeviceTwinOnError",
       getDigitalTwinInterfacePropertiesOnError : "notifications.getDigitalTwinInterfacePropertiesOnError",
       getInterfaceModelOnError : "notifications.getInterfaceModelOnError",

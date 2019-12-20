@@ -119,7 +119,8 @@
             "add": "Create device identity",
             "collapse": "Collapse navigation menu",
             "expand": "Expand navigation menu",
-            "moduleIdentity": "Module identity"
+            "moduleIdentity": "Module identity",
+            "addModuleIdentity": "Add module identity"
         },
         "value": "Value"
     },
@@ -299,21 +300,30 @@
                             "propertyValue": "Property value",
                             "status": "Status",
                             "lastActivityTime": "Last activity time",
-                            "statusUpdateTime": "Status update time"
+                            "statusUpdateTime": "Status update time",
+                            "edge":"Edge"
                         }
                     },
                     "operationType": {
                         "title": "Operation type",
                         "ariaLabel": "Choose a comparison type for this clause",
                         "options": {
-                            "equal": "equal",
-                            "notEqual": "not equal"
+                            "equals": "equals",
+                            "notEquals": "not equal"
                         }
                     },
                     "value": {
                         "placeholder": "Enter value...",
                         "ariaLabel": "Enter a value for this clause",
-                        "title": "Enter value..."
+                        "title": "Enter value...",
+                        "deviceCapability": {
+                            "edge": "is Edge device",
+                            "nonEdge": "is not Edge device"
+                        },
+                        "deviceStatus": {
+                            "enabled": "Enabled",
+                            "disabled": "Disabled"
+                        }
                     },
                     "remove": {
                         "title": "Remove",
@@ -488,8 +498,44 @@
         "bodyTooltip" : "The body of the message to send to the device.",
         "addTimestamp": "Add timestamp to message body",
         "properties": {
-            "customProperties": "Properties",
-            "systemProperties": "System properties",
+            "label": "Properties",
+            "systemProperties": {
+                "ack": {
+                    "displayName": "ack",
+                    "description": "Type of the feedback requested.",
+                    "full": "Full (IoT Hub generates a feedback message in either case)",
+                    "positive": "Positive (If the c2d message reaches the Completed state, IoT Hub generates a feedback message)",
+                    "negative": "Negative (If the c2d message reaches the Dead lettered state, IoT Hub generates a feedback message)"
+                },
+                "contentType": {
+                    "displayName": "content-type",
+                    "description": "The content type associated with the message body."
+                },
+                "contentEncoding": {
+                    "displayName": "content-encoding",
+                    "description": "The content encoding associated with the message body.",
+                    "utf8": "utf-8",
+                    "utf16": "utf-16",
+                    "utf32": "utf-32"
+                },
+                "correlationId": {
+                    "displayName": "correlation-id",
+                    "description": "The correlation Id associated with the message."
+                },
+                "expiryTimeUtc": {
+                    "displayName": "expiry-time-utc",
+                    "description": "Expiry time in UTC in milliseconds since unix epoch.",
+                    "error": "Expiry time must be an integer and greater than now"
+                },
+                "lockToken": {
+                    "displayName": "lock-token",
+                    "description": "Used to Abandon, Reject or Accept the message."
+                },
+                "messageId": {
+                    "displayName": "message-id",
+                    "description": "The message Id. If no message Id is provided a UUID will be generated."
+                }
+            },
             "key": "Key",
             "keyDup": "Key must be unique",
             "value": "Value",
@@ -505,8 +551,12 @@
     },
     "moduleIdentity": {
         "headerText": "Module Identities",
+        "addModuleHeaderText": "Add Module Identity",
         "command" : {
-            "refresh": "Refresh"
+            "add": "Add",
+            "refresh": "Refresh",
+            "cancel": "Cancel",
+            "save": "Create"
         },
         "columns": {
             "moduleId": "Module Id",
@@ -515,7 +565,41 @@
             "lastActivityTime": "Last activity time"
         },
         "noModules": "There are no module identities for this device.",
-        "errorFetching": "An error prevented this information from being loaded."
+        "errorFetching": "An error prevented this information from being loaded.",
+        "moduleId": "Module identity name",
+        "moduleIdTooltip": "Module identity name used for authentication and access control.",
+        "authenticationType": {
+            "text": "Authentication type",
+            "symmetricKey": {
+                "autoGenerate": "Auto-generate keys",
+                "type": "Symmetric key",
+                "primaryKey": "Primary key",
+                "secondaryKey": "Secondary key",
+                "primaryConnectionString": "Primary connection string",
+                "primaryConnectionStringTooltip": "The primary symmetric shared access key stored in base64 format",
+                "secondaryConnectionString": "Secondary connection string",
+                "secondaryConnectionStringTooltip": "The secondary symmetric shared access key stored in base64 format",
+                "generatePrimaryKey": "Generate primary key",
+                "generateSecondaryKey": "Generate secondary key"
+            },
+            "ca": {
+                "type": "X.509 CA signed",
+                "text": "This device is being authenticated through a CA Certificate."
+            },
+            "selfSigned": {
+                "type": "X.509 self-signed",
+                "text": "This device is being authenticated using an X.509 certificate.",
+                "primaryThumbprint": "Primary thumbprint",
+                "primaryThumbprintTooltip": "The primary X.509 thumbprint representing the SHA-1 or SHA-256 hash of the X.509 certificate. Thumbprint values other than 40 hex characters for SHA-1 and 64 hex characters for SHA-256 are not accepted.",
+                "secondaryThumbprint": "Secondary thumbprint",
+                "secondaryThumbprintTooltip": "The secondary X.509 thumbprint representing the SHA-1 or SHA-256 hash of the X.509 certificate. Thumbprint values other than 40 hex characters for SHA-1 and 64 hex characters for SHA-256 are not accepted."
+            }
+        },
+        "validation": {
+            "invalidModuleIdentityName": "Invalid characters in module identity name",
+            "invalidKey": "Invalid key",
+            "invalidThumbprint": "Invalid thumbprint"
+        }
     },
     "noMatchError": {
         "title": "404 - Not found",
@@ -526,6 +610,7 @@
         "savedToIotHubConnectionString": "Successfully saved connection string for IoT hub {{hostName}}",
         "getDeviceIdentityOnError": "Failed to get device {{deviceId}}'s identity: {{error}}",
         "getDeviceListOnError": "Failed to retrieve device list: {{error}}",
+        "getDeviceListQueryGenericErrorHelp": "Failed to retrieve device list. It is possibly due to an invalid query value",
         "getDeviceListGenericErrorHelp": "Failed to retrieve device list. It is possibly due to an invalid IoT hub connection string",
         "getDeviceTwinOnError": "Failed to get device {{deviceId}}'s twin: {{error}}",
         "getDigitalTwinInterfacePropertiesOnError": "Failed to get properties of digital twin interfaces on device {{deviceId}}: {{error}}",
@@ -553,7 +638,10 @@
         "cloudToDeviceMessageOnError": "Failed to send message to device {{deviceId}}: {{error}}",
         "cloudToDeviceMessageOnSuccess": "Successfully send message '{{message}}' to device '{{deviceId}}'",
         "sendingCloudToDeviceMessage": "Trying to send message '{{message}}' to device '{{deviceId}}'",
-        "copiedToClipboard": "Content copied to clipboard"
+        "copiedToClipboard": "Content copied to clipboard",
+        "addModuleIdentityOnSucceed": "Successfully added module identity {{moduleId}}",
+        "addModuleIdentityOnError": "Failed to add  module identity {{moduleId}}: {{error}}"
+
     },
     "errorBoundary": {
         "text": "Something went wrong"
