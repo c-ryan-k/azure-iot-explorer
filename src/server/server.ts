@@ -5,9 +5,13 @@
 import express = require('express');
 import bodyParser = require('body-parser');
 import cors = require('cors');
+import net = require('net');
 import request = require('request');
 import { Client as HubClient } from 'azure-iothub';
 import { Message as CloudToDeviceMessage } from 'azure-iot-common';
+// tslint:disable-next-line:no-submodule-imports
+import { StreamInitiation } from 'azure-iothub/lib/interfaces';
+import websocket = require('websocket-stream');
 import { EventHubClient, EventPosition, delay, EventHubRuntimeInformation, ReceiveHandler } from '@azure/event-hubs';
 import { generateDataPlaneRequestBody, generateDataPlaneResponse } from './dataPlaneHelper';
 
@@ -22,6 +26,7 @@ let client: EventHubClient = null;
 const receivers: ReceiveHandler[] = []; // tslint:disable-line: no-any
 let connectionString: string = '';
 let eventHubClientStopping = false;
+let streamProxyRunning = false;
 
 // should not import from app
 const IOTHUB_CONNECTION_DEVICE_ID = 'iothub-connection-device-id';
@@ -123,7 +128,52 @@ const addPropertiesToCloudToDeviceMessage = (message: CloudToDeviceMessage, prop
         }
     }
 };
-
+app.post('/api/DeviceStreams', (req, res) => {
+    try {
+        if (!req.body) {
+            res.status(BAD_REQUEST).send();
+        }
+        if (streamProxyRunning) {
+            res.status(BAD_REQUEST).send('Device Proxy already running');
+        }
+        else {
+            const hubClient = HubClient.fromConnectionString(req.body.connectionString);
+            hubClient.open(() => {
+                const streamInit: StreamInitiation = {
+                connectTimeoutInSeconds: 30,
+                contentEncoding: '',
+                contentType: '',
+                payload: '',
+                responseTimeoutInSeconds: 30,
+                streamName: 'TestStream'
+                };
+                hubClient.initiateStream(req.body.deviceId, streamInit, (
+                    // tslint:disable:no-any
+                err: any,
+                result: any
+                ) => {
+                if (err) {
+                    res.status(SERVER_ERROR).send(err);
+                } else {
+                    const ws = websocket(result.uri, {
+                    headers: {
+                        Authorization: 'Bearer ' + result.authorizationToken
+                    }
+                    });
+                    ws.on('close', () => {
+                        streamProxyRunning = false;
+                    });
+                    createLocalWebSocketProxy(ws).then(() => {
+                        res.status(SUCCESS).send(JSON.stringify({websocketProxyUri: 'ws://localhost:2222'}));
+                    });
+                }
+                });
+            });
+        }
+    } catch (error) {
+        res.status(SERVER_ERROR).send(error);
+    }
+});
 app.post('/api/EventHub/monitor', (req, res) => {
     try {
         if (!req.body) {
@@ -292,5 +342,28 @@ const handleMessages = async (deviceId: string, eventHubClient: EventHubClient, 
 
     return messages;
 };
+const createLocalWebSocketProxy = async (ws: websocket.WebSocketDuplex) => {
+    const proxyServer = net.createServer(socket => {
+        socket.on('end', () => {
+          // tslint:disable:no-console
+          console.log('client socket disconnected');
+        });
 
+        socket.on('error', err => {
+          console.error('error on the client socket: ' + err);
+        });
+
+        socket.pipe(ws);
+        ws.pipe(socket);
+        return;
+      });
+    proxyServer.on('error', err => {
+        console.error('error on the proxy server socket: ' + err.toString());
+        streamProxyRunning = false;
+      });
+    proxyServer.listen('2222', () => {
+        streamProxyRunning = true;
+        console.log('listening on port 2222');
+      });
+};
 app.listen(SERVER_PORT);

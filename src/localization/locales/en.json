@@ -120,7 +120,8 @@
             "collapse": "Collapse navigation menu",
             "expand": "Expand navigation menu",
             "moduleIdentity": "Module identity",
-            "addModuleIdentity": "Add module identity"
+            "addModuleIdentity": "Add module identity",
+            "deviceStream": "Device Streaming Proxy"
         },
         "value": "Value"
     },
@@ -640,7 +641,9 @@
         "sendingCloudToDeviceMessage": "Trying to send message '{{message}}' to device '{{deviceId}}'",
         "copiedToClipboard": "Content copied to clipboard",
         "addModuleIdentityOnSucceed": "Successfully added module identity {{moduleId}}",
-        "addModuleIdentityOnError": "Failed to add  module identity {{moduleId}}: {{error}}"
+        "addModuleIdentityOnError": "Failed to add  module identity {{moduleId}}: {{error}}",
+        "deviceStreamOpen": "Device streaming proxy started - ssh into your device on port 2222",
+        "deviceStreamError": "Your device already has an open proxy."
 
     },
     "errorBoundary": {

@@ -16,6 +16,7 @@ import { REPOSITORY_LOCATION_TYPE } from './../../constants/repositoryLocationTy
 const deviceContentCreator = actionCreatorFactory(actionPrefixes.DEVICECONTENT);
 const clearModelDefinitionsAction = deviceContentCreator(actionTypes.CLEAR_MODEL_DEFINITIONS);
 const cloudToDeviceMessageAction = deviceContentCreator.async<CloudToDeviceMessageParameters, string>(actionTypes.CLOUD_TO_DEVICE_MESSAGE);
+const initiateDeviceStreamAction = deviceContentCreator.async<CloudToDeviceMessageParameters, string>(actionTypes.INITIATE_DEVICE_STREAM);
 const getDeviceIdentityAction = deviceContentCreator.async<string, DeviceIdentity> (actionTypes.GET_DEVICE_IDENTITY);
 const getDigitalTwinInterfacePropertiesAction = deviceContentCreator.async<string, DigitalTwinInterfaces>(actionTypes.GET_DIGITAL_TWIN_INTERFACE_PROPERTIES);
 const getTwinAction = deviceContentCreator.async<string, Twin>(actionTypes.GET_TWIN);
@@ -35,6 +36,7 @@ export {
     addModuleIdentityAction,
     clearModelDefinitionsAction,
     cloudToDeviceMessageAction,
+    initiateDeviceStreamAction,
     getDeviceIdentityAction,
     getDigitalTwinInterfacePropertiesAction,
     getTwinAction,

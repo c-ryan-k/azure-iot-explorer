@@ -17,7 +17,8 @@ export enum ROUTE_PARTS {
     MODULE_IDENTITY = 'moduleIdentity',
     PROPERTIES = 'properties',
     SETTINGS = 'settings',
-    TWIN = 'twin'
+    TWIN = 'twin',
+    DEVICE_STREAM = 'deviceStream'
 }
 
 export enum ROUTE_PARAMS {

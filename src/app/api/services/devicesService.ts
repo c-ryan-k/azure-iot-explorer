@@ -18,7 +18,7 @@ import { FetchDeviceTwinParameters,
     CloudToDeviceMessageParameters,
     FetchModuleIdentitiesParameters,
     AddModuleIdentityParameters } from '../parameters/deviceParameters';
-import { CONTROLLER_API_ENDPOINT, DATAPLANE, EVENTHUB, DIGITAL_TWIN_API_VERSION, DataPlaneStatusCode, MONITOR, STOP, HEADERS, CLOUD_TO_DEVICE } from '../../constants/apiConstants';
+import { CONTROLLER_API_ENDPOINT, DATAPLANE, EVENTHUB, DIGITAL_TWIN_API_VERSION, DataPlaneStatusCode, MONITOR, STOP, HEADERS, CLOUD_TO_DEVICE, DEVICE_STREAMS } from '../../constants/apiConstants';
 import { HTTP_OPERATION_TYPES } from '../constants';
 import { buildQueryString, getConnectionInfoFromConnectionString, generateSasToken } from '../shared/utils';
 import { CONNECTION_TIMEOUT_IN_SECONDS, RESPONSE_TIME_IN_SECONDS } from '../../constants/devices';
@@ -288,6 +288,18 @@ export const cloudToDeviceMessage = async (parameters: CloudToDeviceMessageParam
             ...parameters
         };
         const response = await request(`${CONTROLLER_API_ENDPOINT}${CLOUD_TO_DEVICE}`, cloudToDeviceRequest);
+        await dataPlaneResponseHelper(response);
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const initiateDeviceStream = async (parameters: CloudToDeviceMessageParameters) => {
+    try {
+        const cloudToDeviceRequest = {
+            ...parameters
+        };
+        const response = await request(`${CONTROLLER_API_ENDPOINT}${DEVICE_STREAMS}`, cloudToDeviceRequest);
         await dataPlaneResponseHelper(response);
     } catch (error) {
         throw error;

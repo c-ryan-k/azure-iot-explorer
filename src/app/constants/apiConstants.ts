@@ -10,6 +10,7 @@ export const DATAPLANE = '/DataPlane';
 export const EVENTHUB = '/EventHub';
 export const MODELREPO = '/ModelRepo';
 export const CLOUD_TO_DEVICE = '/CloudToDevice';
+export const DEVICE_STREAMS = '/DeviceStreams';
 
 // model repo .net controller
 export const INTERFACE_ID = '?interfaceId=';
