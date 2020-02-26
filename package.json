@@ -71,6 +71,7 @@
     "@azure/event-hubs": "1.0.7",
     "@types/core-js": "2.5.0",
     "@types/semver": "6.0.2",
+    "@types/ssh2": "^0.5.40",
     "@types/uuid": "3.4.5",
     "azure-iot-common": "1.10.3",
     "azure-iothub": "1.10.0-preview.0",
@@ -103,11 +104,15 @@
     "request": "2.88.0",
     "reselect": "4.0.0",
     "semver": "6.3.0",
+    "simple-ssh": "^1.0.0",
     "socket.io-client": "2.3.0",
+    "ssh2": "^0.8.8",
+    "terminal-in-react": "^4.3.1",
     "typescript-fsa": "3.0.0-beta-2",
     "typescript-fsa-reducers": "1.0.0",
     "uuid": "3.3.3",
-    "websocket-stream": "^5.5.0"
+    "websocket-stream": "^5.5.0",
+    "ws": "^7.2.1"
   },
   "devDependencies": {
     "@types/async-lock": "1.1.0",
@@ -133,6 +138,7 @@
     "@types/webpack": "4.4.22",
     "@types/webpack-dev-server": "3.1.7",
     "@types/webpack-merge": "4.1.5",
+    "@types/ws": "^7.2.2",
     "awesome-typescript-loader": "5.2.1",
     "concurrently": "4.1.0",
     "css-loader": "1.0.0",

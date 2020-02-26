@@ -17,7 +17,8 @@ import { FetchDeviceTwinParameters,
     PatchDigitalTwinInterfacePropertiesParameters,
     CloudToDeviceMessageParameters,
     FetchModuleIdentitiesParameters,
-    AddModuleIdentityParameters } from '../parameters/deviceParameters';
+    AddModuleIdentityParameters,
+    DeviceStreamParameters } from '../parameters/deviceParameters';
 import { CONTROLLER_API_ENDPOINT, DATAPLANE, EVENTHUB, DIGITAL_TWIN_API_VERSION, DataPlaneStatusCode, MONITOR, STOP, HEADERS, CLOUD_TO_DEVICE, DEVICE_STREAMS } from '../../constants/apiConstants';
 import { HTTP_OPERATION_TYPES } from '../constants';
 import { buildQueryString, getConnectionInfoFromConnectionString, generateSasToken } from '../shared/utils';
@@ -294,7 +295,7 @@ export const cloudToDeviceMessage = async (parameters: CloudToDeviceMessageParam
     }
 };
 
-export const initiateDeviceStream = async (parameters: CloudToDeviceMessageParameters) => {
+export const initiateDeviceStream = async (parameters: DeviceStreamParameters) => {
     try {
         const cloudToDeviceRequest = {
             ...parameters

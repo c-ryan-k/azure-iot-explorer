@@ -34,6 +34,13 @@ export interface CloudToDeviceMessageParameters extends DataPlaneParameters {
     properties?: Array<{key: string, value: string, isSystemProperty: boolean}>;
 }
 
+export interface DeviceStreamParameters extends DataPlaneParameters {
+    deviceId: string;
+    user: string;
+    privateKey: string;
+    password: string;
+}
+
 export interface FetchDeviceParameters extends DataPlaneParameters {
     deviceId: string;
 }

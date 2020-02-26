@@ -6,6 +6,9 @@ import express = require('express');
 import bodyParser = require('body-parser');
 import cors = require('cors');
 import net = require('net');
+import * as http from 'http';
+import * as WebSocket from 'ws';
+import { Client as SSHClient, ClientChannel } from 'ssh2';
 import request = require('request');
 import { Client as HubClient } from 'azure-iothub';
 import { Message as CloudToDeviceMessage } from 'azure-iot-common';
@@ -163,8 +166,13 @@ app.post('/api/DeviceStreams', (req, res) => {
                     ws.on('close', () => {
                         streamProxyRunning = false;
                     });
-                    createLocalWebSocketProxy(ws).then(() => {
-                        res.status(SUCCESS).send(JSON.stringify({websocketProxyUri: 'ws://localhost:2222'}));
+                    const creds: UserInfo = {
+                        password: req.body.password  || undefined,
+                        privateKey: req.body.privateKey || undefined,
+                        username: req.body.user,
+                    };
+                    createLocalWebSocketProxy(ws, creds).then(() => {
+                        res.status(SUCCESS).send(JSON.stringify({websocketProxyUri: 'ws://localhost:2223'}));
                     });
                 }
                 });
@@ -342,28 +350,68 @@ const handleMessages = async (deviceId: string, eventHubClient: EventHubClient, 
 
     return messages;
 };
-const createLocalWebSocketProxy = async (ws: websocket.WebSocketDuplex) => {
-    const proxyServer = net.createServer(socket => {
-        socket.on('end', () => {
-          // tslint:disable:no-console
-          console.log('client socket disconnected');
-        });
+interface UserInfo {
+    username: string;
+    password?: string;
+    privateKey?: string;
+}
+const createLocalWebSocketProxy = async (ws: websocket.WebSocketDuplex, creds: UserInfo) => {
+    return new Promise((resolve, reject) => {
+    // tslint:disable:no-console
+        try {
+            const proxyServer = net.createServer(socket => {
+                socket.on('end', () => {
+                // tslint:disable:no-console
+                console.log('client socket disconnected');
+                });
 
-        socket.on('error', err => {
-          console.error('error on the client socket: ' + err);
-        });
+                socket.on('error', err => {
+                console.error('error on the client socket: ' + err);
+                });
+                socket.pipe(ws);
+                ws.pipe(socket);
+                return;
+            });
+            proxyServer.listen('2222', () => {
+                streamProxyRunning = true;
 
-        socket.pipe(ws);
-        ws.pipe(socket);
-        return;
-      });
-    proxyServer.on('error', err => {
-        console.error('error on the proxy server socket: ' + err.toString());
-        streamProxyRunning = false;
-      });
-    proxyServer.listen('2222', () => {
-        streamProxyRunning = true;
-        console.log('listening on port 2222');
-      });
+                const conn = new SSHClient();
+                conn.on('ready', () => {
+                    resolve();
+                    conn.shell({term: 'dumb'}, (err, stream) => {
+                        let lastCMD = '';
+                        const wsForShell = new WebSocket.Server({server, port: 2223});
+                        wsForShell.on('connection', shellSocket => {
+                            shellSocket.on('message', data => {
+                                lastCMD = `${data.toString()}\n`;
+                                stream.write(`${data.toString()}\n`);
+                            });
+                            stream.on('close', () => {
+                                console.log('Stream :: close');
+                                proxyServer.close();
+                                conn.end();
+                            }).on('data', (data: any) => {
+                                console.log(`sending to socket:\n${data.toString('utf8')}`);
+                                // tslint:disable-next-line:triple-equals
+                                if (data.toString('utf8') != lastCMD) {
+                                    shellSocket.send(data);
+                                }
+                            });
+                        });
+                    });
+                    streamProxyRunning = true;
+                }).connect({
+                    host: 'localhost',
+                    password: creds.password || undefined,
+                    port: 2222,
+                    privateKey: creds.privateKey &&  require('fs').readFileSync(creds.privateKey) || undefined,
+                    username: creds.username,
+                });
+            });
+        }
+        catch (ex: Exception) {
+            reject(ex);
+        }
+    });
 };
-app.listen(SERVER_PORT);
+const server = app.listen(SERVER_PORT);

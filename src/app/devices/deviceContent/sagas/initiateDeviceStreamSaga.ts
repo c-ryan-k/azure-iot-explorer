@@ -2,12 +2,12 @@ import { Action } from 'typescript-fsa';
 import { call, put } from 'redux-saga/effects';
 import { initiateDeviceStreamAction } from '../actions';
 import { initiateDeviceStream } from '../../../api/services/devicesService';
-import { CloudToDeviceMessageParameters } from '../../../api/parameters/deviceParameters';
+import { CloudToDeviceMessageParameters, DeviceStreamParameters } from '../../../api/parameters/deviceParameters';
 import { addNotificationAction } from '../../../notifications/actions';
 import { ResourceKeys } from '../../../../localization/resourceKeys';
 import { NotificationType } from '../../../api/models/notification';
 
-export function* initiateDeviceStreamSaga(action: Action<CloudToDeviceMessageParameters>) {
+export function* initiateDeviceStreamSaga(action: Action<DeviceStreamParameters>) {
     try {
       const response = yield call(initiateDeviceStream, {
         ...action.payload
